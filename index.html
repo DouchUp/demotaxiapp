@@ -1,0 +1,540 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="basic.css">
+<link rel="stylesheet" href="loader.css">
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+<style>
+  * {
+    overflow-x: hidden;
+  }
+  #loader {
+    background: #fff;
+    z-index: 9999;
+  }
+  .card {
+    width: 90%;
+    margin: auto;
+  }
+  .carousel-controls {
+    display: none;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .carousel-wrapper {
+    text-align: center;
+    margin-top: 20px;
+  }
+  i { overflow: hidden; }
+  @media (max-width: 768px) {
+    #authBtn , .header-desktop { display: none; }
+    #appIcon > img {
+      width: 45px;
+      height: 45px;
+      border-radius: 125px;
+      border: 1px solid #FFF;
+    }
+    #date { width: 100%; }
+    .header-mobile > a {
+      font-size: 20px;
+      color: #FFF;
+      padding: 12px;
+      border: 1px solid;
+      border-radius: 125px;
+    }
+    #destinationForm{
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px 15px;
+    }
+    #content {
+      background: #FFF;
+      border-radius: 25px;
+      margin: -25px 0 0 0;
+    }
+    .header-mobile {
+      display: flex;
+      background: #635a00;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 15px 50px 15px;
+    }
+    .carousel-controls {
+      display: flex;
+    }
+    #cabCard .card,
+    #cityCard .card {
+      display: none;
+    }
+    #cabCard .card.active,
+    #cityCard .card.active {
+      display: block;
+    }
+    .carousel-controls {
+      position: absolute;
+      top: 160%;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 95%;
+    }
+    .con-text {
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2.5;
+      padding: 5px 10px;
+      background: #ffff00;
+      margin: 15px 20%;
+      border-radius: 125px;
+    }
+    #cabNext , #cabPrev , #cityPrev , #cityNext {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 125px;
+      border: none;
+      color: #FFF;
+      background: #635a00;
+    }
+    #cityPrev:disabled,
+    #cityPrev[disabled] {
+      background-color: #4e4800;
+      color: #808080;
+      border-color: #4e4800;
+    }
+    #cityNext:disabled,
+    #cityNext[disabled] {
+        background-color: #4e4800;
+      color: #808080;
+      border-color: #4e4800;
+    }
+    #cabPrev:disabled,
+    #cabPrev[disabled] {
+      background-color: #4e4800;
+      color: #808080;
+      border-color: #4e4800;
+    }
+    #cabNext:disabled,
+    #cabNext[disabled] {
+        background-color: #4e4800;
+      color: #808080;
+      border-color: #4e4800;
+    }
+    #welcome {
+      margin: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 769px) {
+    .header-mobile { display: none; }
+    .header-desktop {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 15px 0;
+    }
+    .con-text {
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2.5;
+      padding: 5px 10px;
+      background: #ffff00;
+      margin: 15px 38%;
+      cursor: pointer;
+      border-radius: 125px;
+    }
+    .links {
+      display: flex;
+      flex-direction: row;
+      gap: 25px;
+    }
+    .int { cursor: pointer; }
+    .links > a {
+      color: #333;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1.6;
+    }
+    .links > a:hover{
+      text-transform: lowercase;
+      letter-spacing: 1.4;
+      color: #ff0000;
+    }
+    #destinationForm {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 10px 15%;
+    }
+    #authBtn {
+      font-size: 22px;
+      color: #616161;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      background: none;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 125px;
+    }
+    #appLogo > img {
+      width: 50px;
+      height: 50px;
+      border-radius: 125px;
+      cursor: pointer;
+    }
+    #cabCard,
+    #cityCard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .carousel-controls {
+      display: none;
+    }
+  }
+  #whatsapp {
+    text-align: center;
+    margin: 20px;
+  }
+  #whatsapp p {
+    margin: 5px 0;
+  }
+  #installPopup {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    color: #FFF;
+    background: #635a00;
+    border-bottom: 1px solid #ccc;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  #installBox {
+    color: #FFF;
+    max-width: 800px;
+    margin: auto;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: sans-serif;
+    position: relative;
+  }
+  #installBox p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #FFF;
+  }
+  #installBtn {
+    background: #007bff;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 125px;
+    border: none;
+    cursor: pointer;
+  }
+  #installBtn:hover {
+    background: #0056b3;
+  }
+  #closeInstall {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    align-items: center;
+    border-radius: 125px;
+    display: flex;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    font-size: 12px;
+    background: #ff0000;
+  }
+</style>
+<div id="loader"><div class="loader"></div></div>
+<div id="installPopup" style="display:none;">
+  <div id="installBox">
+    <span id="closeInstall"><i class="fa-classic fa-solid fa-circle-xmark fa-fw"></i></span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div id="popupLogo"></div>
+      <div>
+        <strong>Install App</strong>
+        <p>And get better results.</p>
+      </div>
+    </div>
+    <button id="installBtn"><i class="fa-classic fa-solid fa-cloud-arrow-down fa-fw"></i></button>
+  </div>
+</div>
+<div class="header-mobile">
+  <div id="appIcon"></div>
+  <a href="profile.html"><i class="fa-solid fa-user-tie"></i></a>
+</div>
+<div class="header-desktop">
+  <div id="appLogo"></div>
+  <div class="links">
+    <a href="t&c.html">Terms & Conditions</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="history.html">Bookings</a>
+    <a href="book.html">Searched</a>
+  </div>
+  <button id="authBtn"></button>
+</div>
+<div id="content" class="hidden">
+  <div id="destinationForm">
+    <div class="text">
+      <h2>Choose Destination</h2>
+      <p>From to To you want to travel.</p>
+    </div>
+    <select id="from" class="int"><option value="">Select From</option></select>
+    <select id="to" class="int" disabled><option value="">Select To</option></select>
+    <input type="date" id="date" class="int">
+    <button onclick="checkDestination()" class="btn">Check</button>
+  </div>
+  <div id="cabText" style="display: none;"></div>
+  <h2 class="con-text">Cabs We Offer</h2>
+  <p class="cab-text">Your journey with our Cab is our priority. We ensure every ride is in a clean, modern, and safe vehicle, reflecting our commitment to both passengers and drivers. Hundreds of daily safe trips speak for themselves! Plus, we're saying goodbye to petrol/diesel. Enjoy an eco-friendly ride, as our cabs run on CNG or electric power, making your travel responsible and reliable.</p>
+  <div class="carousel-wrapper">
+    <div id="cabCard"></div>
+    <div class="carousel-controls" style="top: 87%;">
+      <button id="cabPrev" onclick="prevCab()"><i class="fa-solid fa-arrow-left"></i></button>
+      <button id="cabNext" onclick="nextCab()"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+  <h2 class="con-text">We Are In</h2>
+  <div class="carousel-wrapper">
+    <div id="cityCard"></div>
+    <div class="carousel-controls">
+      <button id="cityPrev" onclick="prevCity()"><i class="fa-solid fa-arrow-left"></i></button>
+      <button id="cityNext" onclick="nextCity()"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+  <h2 class="con-text">About Us</h2>
+  <div id="welcome"></div>
+  <h2 class="con-text">Contact</h2>
+  <div class="center">
+    <div id="whatsapp"></div>
+  </div>
+  <h2 class="con-text">Reviews</h2>
+  <div id="review"></div>
+</div>
+<script>
+  document.getElementById('loader').style.display = 'flex';
+  let destinationMap = {};
+  const dateInput = document.getElementById("date");
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+  let cabIndex = 0;
+  let cityIndex = 0;
+  let cabData = [];
+  let cityData = [];
+
+  function renderCabCards() {
+    const cabCard = document.getElementById("cabCard");
+    cabCard.innerHTML = "";
+    cabData.forEach((cab, index) => {
+      const div = document.createElement("div");
+      div.className = "card";
+      if (window.innerWidth <= 768) {
+        if (index === cabIndex) div.classList.add("active");
+      }
+      div.innerHTML = `<img src="${cab[0]}"><h3>${cab[1]}</h3><p>${cab[2]}</p>`;
+      cabCard.appendChild(div);
+    });
+    document.getElementById("cabPrev").disabled = cabIndex === 0;
+    document.getElementById("cabNext").disabled = cabIndex === cabData.length - 1;
+  }
+
+  function renderCityCards() {
+    const cityCard = document.getElementById("cityCard");
+    cityCard.innerHTML = "";
+    cityData.forEach((city, index) => {
+      const div = document.createElement("div");
+      div.className = "card";
+      if (window.innerWidth <= 768) {
+        if (index === cityIndex) div.classList.add("active");
+      }
+      div.innerHTML = `<img src="${city[0]}"><h3>${city[1]}</h3><p>${city[2]}</p>`;
+      cityCard.appendChild(div);
+    });
+    document.getElementById("cityPrev").disabled = cityIndex === 0;
+    document.getElementById("cityNext").disabled = cityIndex === cityData.length - 1;
+  }
+
+  function nextCab() {
+    if (cabIndex < cabData.length - 1) {
+      cabIndex++;
+      renderCabCards();
+    }
+  }
+
+  function prevCab() {
+    if (cabIndex > 0) {
+      cabIndex--;
+      renderCabCards();
+    }
+  }
+
+  function nextCity() {
+    if (cityIndex < cityData.length - 1) {
+      cityIndex++;
+      renderCityCards();
+    }
+  }
+
+  function prevCity() {
+    if (cityIndex > 0) {
+      cityIndex--;
+      renderCityCards();
+    }
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbykQGPbwf379pnZ__mxAPq-3sIzSP5kkW6vIXgEB_Rd_s3XxyDcOMnPqgzZAcTHr7JDOw/exec")
+    .then(res => res.json())
+    .then(data => {
+      const info = data.Info[0];
+      document.getElementById("appIcon").innerHTML = `<img src="${info[0]}" width="100">`;
+      document.getElementById("appLogo").innerHTML = `<img src="${info[0]}" width="100">`;
+      document.getElementById("popupLogo").innerHTML = `<img src="${info[0]}" width="40" height="40" style="border-radius: 125px;">`;
+      document.getElementById("welcome").innerText = info[1];
+      document.getElementById("cabText").innerText = info[2];
+      document.getElementById("whatsapp").innerHTML = `
+        <p><strong>Phone:</strong> ${info[3]}</p>
+        <p><strong>Message:</strong> ${info[4]}</p>
+        <a href="https://wa.me/${info[3]}?text=${encodeURIComponent(info[4])}" target="_blank">
+          <button>Contact on WhatsApp</button>
+        </a>`;
+
+      cabData = data.Cabs;
+      cityData = data.Cities;
+      renderCabCards();
+      renderCityCards();
+
+      const reviews = data.Review;
+      let reviewIndex = 0;
+      function showReview() {
+        const r = reviews[reviewIndex];
+        document.getElementById("review").innerHTML = `
+          <div class="card">
+            <img src="${r[0]}">
+            <h4>${r[1]}</h4>
+            <p>${r[2]}</p>
+          </div>`;
+        reviewIndex = (reviewIndex + 1) % reviews.length;
+      }
+      showReview();
+      setInterval(showReview, 4000);
+
+      const destinations = data.Destination;
+      destinations.forEach(d => {
+        const from = d[0];
+        const to = d[1];
+        if (!destinationMap[from]) destinationMap[from] = new Set();
+        destinationMap[from].add(to);
+      });
+
+      const fromSelect = document.getElementById("from");
+      const toSelect = document.getElementById("to");
+      Object.keys(destinationMap).forEach(from => {
+        const opt = document.createElement("option");
+        opt.value = opt.text = from;
+        fromSelect.appendChild(opt);
+      });
+
+      fromSelect.addEventListener("change", function () {
+        toSelect.innerHTML = `<option value="">Select To</option>`;
+        if (this.value && destinationMap[this.value]) {
+          toSelect.disabled = false;
+          Array.from(destinationMap[this.value]).forEach(to => {
+            const opt = document.createElement("option");
+            opt.value = opt.text = to;
+            toSelect.appendChild(opt);
+          });
+        } else {
+          toSelect.disabled = true;
+        }
+      });
+
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('content').classList.remove('hidden');
+    });
+
+  function checkDestination() {
+    const from = document.getElementById("from").value;
+    const to = document.getElementById("to").value;
+    const date = document.getElementById("date").value;
+    if (from && to && date) {
+      localStorage.setItem("from", from);
+      localStorage.setItem("to", to);
+      localStorage.setItem("date", date);
+      window.location.href = "cab.html";
+    } else {
+      alert("Please select From, To, and Date");
+    }
+  }
+
+  window.addEventListener("resize", () => {
+    renderCabCards();
+    renderCityCards();
+  });
+
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installPopup').style.display = 'block';
+  });
+
+  document.getElementById('installBtn').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        document.getElementById('installPopup').style.display = 'none';
+        deferredPrompt = null;
+      });
+    }
+  });
+
+  document.getElementById('closeInstall').addEventListener('click', () => {
+    document.getElementById('installPopup').style.display = 'none';
+  });
+</script>
+<script>
+  const authBtn = document.getElementById("authBtn");
+  const taxiUser = localStorage.getItem("taxi_local");
+  if (taxiUser) {
+    authBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+    authBtn.onclick = () => {
+      localStorage.removeItem("taxi_local");
+      location.reload();
+    };
+  } else {
+    authBtn.innerHTML = '<i class="fa-solid fa-user-tie"></i>';
+    authBtn.onclick = () => {
+      window.location.href = "login.html";
+    };
+  }
+</script>

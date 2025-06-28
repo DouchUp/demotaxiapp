@@ -1,0 +1,483 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="loader.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7fafc;
+  min-height: 100vh;
+  color: #333;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-top: 20px;
+  display: none;
+}
+
+.header h1 {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+}
+
+.payment-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.trip-details {
+  background: #f8f9ff;
+  border-radius: 15px;
+  padding: 5px 20px;
+  margin-bottom: 25px;
+  border-left: 4px solid #667eea;
+}
+
+.trip-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.trip-row:last-child {
+  border-bottom: none;
+}
+
+.trip-label {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trip-value {
+  color: #2d3748;
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.amount-section {
+  text-align: center;
+  margin: 25px 0;
+  display: none;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 15px;
+  color: white;
+}
+
+.amount-label {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.amount-value {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.payment-methods {
+  margin: 25px 0;
+}
+
+.payment-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.payment-icons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.payment-icons img {
+  max-width: 65%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.qr-section {
+  text-align: center;
+  margin: 25px 0;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 15px;
+  border: 2px dashed #cbd5e0;
+}
+
+.qr-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 15px;
+}
+
+.qr-code {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.qr-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.upload-section {
+  margin: 25px 0;
+}
+
+.upload-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 15px;
+}
+
+.file-input-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.file-input-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+
+
+.file-input-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.file-input-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.file-selected {
+  background: #48bb78;
+  border-color: #48bb78;
+}
+
+.book-button {
+  width: 100%;
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}
+
+.book-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+}
+
+.book-button:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.loader-container {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.security-note {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.security-note p {
+  color: #c53030;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  body {
+    background: #fff;
+  }
+  .container {
+    padding: 15px;
+  }
+  
+  .payment-card {
+    padding: 20px;
+    margin: -15px;
+    border-radius: 0px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+  
+  .amount-value {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 360px) {
+  .amount-value {
+    font-size: 28px;
+  }
+  
+  .book-button {
+    font-size: 16px;
+    padding: 16px;
+  }
+}
+</style>
+
+<div id="loader" class="loader-container">
+  <div class="loader"></div>
+  <div class="spinner" style="display: none;"></div>
+  <div class="loader-text" style="display: none;">Loading Payment Details...</div>
+</div>
+
+<div id="content" class="hidden">
+  <div class="container">
+    <div class="header">
+      <h1>🚗 Cab Booking</h1>
+      <p>Complete your payment to confirm booking</p>
+    </div>
+    
+    <div class="payment-card">
+      <div class="trip-details" id="tripDetails">
+        <div class="trip-row">
+          <div class="trip-label">From</div>
+          <div class="trip-value" id="fromLocation">Loading...</div>
+        </div>
+        <div class="trip-row">
+          <div class="trip-label">To</div>
+          <div class="trip-value" id="toLocation">Loading...</div>
+        </div>
+        <div class="trip-row">
+          <div class="trip-label">Date</div>
+          <div class="trip-value" id="travelDate">Loading...</div>
+        </div>
+        <div class="trip-row">
+          <div class="trip-label">Cab Type</div>
+          <div class="trip-value" id="cabType">Loading...</div>
+        </div>
+      </div>
+      
+      <div class="amount-section">
+        <div class="amount-label">Total Fare</div>
+        <div class="amount-value" id="totalAmount">₹0.00</div>
+        <div style="font-size: 14px; opacity: 0.9;">Including all taxes</div>
+      </div>
+      
+      
+      <div class="qr-section">
+        <div class="qr-title">🔒 Scan QR Code to Pay</div>
+        <div id="qr"></div>
+      </div>
+      
+      <div class="payment-methods">
+        <div class="payment-title">Accepted Payment Methods</div>
+        <div class="payment-icons">
+          <img src="https://app.jinjimaharaj.com/uploads/payment-logo-icons-1024x272-1.png" alt="Payment Methods">
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <div class="upload-title">📸 Upload Payment Screenshot</div>
+        <div class="file-input-wrapper" id="fileWrapper" onclick="document.getElementById('screenshot').click()">
+          <input type="file" id="screenshot" accept="image/*" style="display: none;">
+          <div class="file-input-text">📷 Choose Screenshot</div>
+          <div class="file-input-desc">Upload payment confirmation screenshot</div>
+        </div>
+      </div>
+      
+      <button class="book-button" onclick="bookNow()" id="bookButton" disabled>
+        🚀 Confirm Booking
+      </button>
+      
+      <div class="security-note">
+        <p>🔐 Your payment is secure and encrypted</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+if (!localStorage.getItem("taxi_local")) window.location.href = "login.html";
+
+const from = localStorage.getItem("from");
+const to = localStorage.getItem("to");
+const date = localStorage.getItem("date");
+const cabId = localStorage.getItem("cab_id");
+const userId = localStorage.getItem("taxi_local");
+let fare = 0;
+let upi = '';
+let merchant = '';
+
+document.getElementById("fromLocation").textContent = from || "Loading...";
+document.getElementById("toLocation").textContent = to || "Loading...";
+document.getElementById("travelDate").textContent = date || "Loading...";
+
+document.getElementById("screenshot").addEventListener('change', function(e) {
+  const wrapper = document.getElementById("fileWrapper");
+  const button = document.getElementById("bookButton");
+  
+  if (e.target.files.length > 0) {
+    wrapper.classList.add("file-selected");
+    wrapper.querySelector(".file-input-text").textContent = "✅ Screenshot Selected";
+    wrapper.querySelector(".file-input-desc").textContent = e.target.files[0].name;
+    button.disabled = false;
+  } else {
+    wrapper.classList.remove("file-selected");
+    wrapper.querySelector(".file-input-text").textContent = "📷 Choose Screenshot";
+    wrapper.querySelector(".file-input-desc").textContent = "Upload payment confirmation screenshot";
+    button.disabled = true;
+  }
+});
+
+document.getElementById("loader").style.display = "flex";
+
+fetch("https://script.google.com/macros/s/AKfycbx9zqrkB_KZSaxpXSBDDgaCvYeKs6hQuhJrSKntSAfH4vs6dgsMYVCP3Cnjcm1y4cKLCw/exec")
+  .then(res => res.json())
+  .then(data => {
+    const destination = data.Destination.find(r => r[0] === from && r[1] === to);
+    const km = parseFloat(destination[2]);
+    const cab = data.Vehicle.find(r => r[4] === cabId);
+    const rate = parseFloat(cab[3]);
+    fare = rate * km;
+    merchant = data.Info[0][7];
+    upi = data.Info[0][8];
+    
+    document.getElementById("cabType").textContent = cab[1] || "Standard";
+    document.getElementById("totalAmount").textContent = `₹${fare.toFixed(2)}`;
+    
+    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi%3A%2F%2Fpay%3Fpa%3D${encodeURIComponent(upi)}%26pn%3D${encodeURIComponent(merchant)}%26am%3D${fare.toFixed(2)}`;
+    document.getElementById("qr").innerHTML = `<div class="qr-code"><img src="${qrURL}" style="width: 180px; height: 180px;"></div><div class="qr-amount">₹${fare.toFixed(2)}</div>`;
+    
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").classList.remove("hidden");
+  })
+  .catch(err => {
+    document.getElementById("loader").querySelector(".loader-text").textContent = "Error loading payment details. Please refresh.";
+  });
+
+function bookNow() {
+  const file = document.getElementById("screenshot").files[0];
+  if (!file) {
+    alert("Please upload payment screenshot to proceed");
+    return;
+  }
+  
+  document.getElementById("loader").style.display = "flex";
+  document.getElementById("loader").querySelector(".loader-text").textContent = "Processing booking...";
+  
+  const form = new FormData();
+  form.append("image", file);
+  
+  fetch("https://api.imgbb.com/1/upload?key=a1aab7277069e3d6fa62ab397ae5dfca", {
+    method: "POST", 
+    body: form
+  })
+  .then(res => res.json())
+  .then(result => {
+    const imageUrl = result.data.url;
+    sendBooking(imageUrl);
+  })
+  .catch(err => {
+    document.getElementById("loader").style.display = "none";
+    alert("Failed to upload screenshot. Please try again.");
+  });
+}
+
+function sendBooking(image) {
+  fetch("https://script.google.com/macros/s/AKfycbx9zqrkB_KZSaxpXSBDDgaCvYeKs6hQuhJrSKntSAfH4vs6dgsMYVCP3Cnjcm1y4cKLCw/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      userid: userId,
+      from: from, 
+      to: to,
+      fare: fare.toFixed(2),
+      date: date,
+      cabid: cabId,
+      screenshot: image
+    })
+  })
+  .then(() => {
+    const taxiLocal = localStorage.getItem("taxi_local");
+    localStorage.clear();
+    localStorage.setItem("taxi_local", taxiLocal);
+    window.location.href = "sucess.html";
+  })
+  .catch(err => {
+    document.getElementById("loader").style.display = "none";
+    alert("Booking failed. Please try again.");
+  });
+}
+</script>

@@ -1,0 +1,251 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="loader.css">
+<link rel="stylesheet" href="basic.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  #loader { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    background: #fff;
+    z-index: 999;
+   }
+  .header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  i { overflow: hidden; }
+  .back-button {
+    overflow: hidden;
+    background: #635a00;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .back-button:active {
+    transform: translateY(0);
+  }
+
+  .header-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .main-container {
+    max-width: 1200px;
+    /*margin: 2rem auto;*/
+    padding: 0 2rem;
+  }
+  .loading-text { display: none; }
+  #container {
+    display: none;
+  }
+
+  .content-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .content-card p {
+    font-size: 24px;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #555;
+    font-weight: bolder;
+    text-align: justify;
+  }
+
+  .content-card ul {
+    list-style: none;
+    margin: 1.5rem 0;
+  }
+
+  .content-card li {
+    background: linear-gradient(135deg, #f8f9ff, #e8ecff);
+    margin-bottom: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .content-card li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .content-card li:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  }
+
+  .content-card li:hover::before {
+    opacity: 1;
+  }
+
+  .content-card li b {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .header {
+      padding: 1rem;
+    }
+
+    .header-content {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .header-title {
+      font-size: 1.5rem;
+    }
+
+    .main-container {
+      margin: 1rem auto;
+      padding: 0 1rem;
+    }
+
+    .content-card {
+      padding: 1.5rem;
+      border-radius: 15px;
+    }
+
+    .content-card p {
+      font-size: 24px;
+    }
+
+    .content-card li {
+      padding: 12px 15px;
+      border-radius: 125px;
+    }
+
+    .back-button {
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-content {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 1.3rem;
+    }
+
+    .content-card {
+      padding: 15px;
+    }
+
+    .content-card li:hover {
+      transform: none;
+    }
+  }
+</style>
+<div id="loader"><div class="loader"></div><div class="loading-text">Loading content...</div></div>
+<div class="header">
+  <div class="header-content">
+    <button class="back-button" onclick="history.back()">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Back</span>
+    </button>
+    <h1 class="header-title">About Us</h1>
+  </div>
+</div>
+
+<div class="main-container">
+  <div id="container">
+    <div class="content-card" id="content"></div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("loader").style.display = "flex";
+
+  fetch("https://script.google.com/macros/s/AKfycbyr2x7xx7OnwvvxDHd1aIJN5NTOI8AVZYeaFIaPTFSwhaG1Zgv_RowrD-fYgdcBthBMQw/exec")
+    .then(res => res.json())
+    .then(data => {
+      const raw = data.Info[0][6];
+      const parts = raw.split(",").map(line => {
+        line = line.trim();
+        if (line.startsWith(".")) {
+          const text = line.substring(1);
+          return `<li><b>${text}</b></li>`;
+        } else {
+          return `<p>${line}</p>`;
+        }
+      }).join("");
+      document.getElementById("content").innerHTML = parts;
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("container").style.display = "block";
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById("content").innerHTML = '<p>Sorry, we could not load the content at this time. Please try again later.</p>';
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("container").style.display = "block";
+    });
+</script>
